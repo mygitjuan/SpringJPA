@@ -1,5 +1,6 @@
 package com.dxc.mypersonalbankapi.modelos.clientes;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import lombok.*;
 @Entity
 public class Empresa extends Cliente {
     private String cif;
+    @Column(name="unidades_de_negocio")
     private String[] unidadesNegocio;
 
     public Empresa(Integer id, String nombre, String email, String direccion, LocalDate alta, boolean activo, boolean moroso, String cif, String[] unidadesNegocio) throws Exception{

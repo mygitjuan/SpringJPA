@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,12 +23,20 @@ import java.util.List;
 
 public class ClienteRepositoryJPA implements IClientesRepo {
 
+
     @PersistenceContext
     private EntityManager em;
 
     @Override
+    @Transactional
+    public Cliente addClient(Cliente cliente) throws Exception {
+        em.persist(cliente);
+        return cliente;
+    }
+
+    @Override
     public List<Cliente> getAll() throws Exception {
-        return null;
+        return em.createQuery("SELECT c FROM cliente c", Cliente.class).getResultList();
     }
 
     @Override
@@ -35,10 +44,7 @@ public class ClienteRepositoryJPA implements IClientesRepo {
         return null;
     }
 
-    @Override
-    public Cliente addClient(Cliente cliente) throws Exception {
-        return null;
-    }
+
 
     @Override
     public boolean deleteClient(Cliente cliente) throws Exception {

@@ -16,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "cliente")
 public abstract class Cliente {
 
