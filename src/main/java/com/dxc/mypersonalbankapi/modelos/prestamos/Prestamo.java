@@ -1,13 +1,18 @@
 package com.dxc.mypersonalbankapi.modelos.prestamos;
 
 import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "prestamo")
 public class Prestamo {

@@ -1,7 +1,7 @@
 package com.dxc.mypersonalbankapi.modelos.cuentas;
 
 import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "cuenta")
 public abstract class Cuenta {

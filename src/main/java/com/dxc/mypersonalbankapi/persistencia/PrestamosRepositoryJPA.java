@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,8 @@ public class PrestamosRepositoryJPA implements IPrestamosRepo {
 
 
     @Override
-    public List<Prestamo> getAll() {
-        return null;
+    public List<Prestamo> getAll() throws RuntimeException{
+        return em.createQuery("SELECT p FROM Prestamo p", Prestamo.class).getResultList();
     }
 
     @Override
