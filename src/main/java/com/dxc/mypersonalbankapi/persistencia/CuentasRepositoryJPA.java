@@ -31,8 +31,8 @@ public class CuentasRepositoryJPA implements ICuentasRepo {
 
 
     @Override
-    public List<Cuenta> getAll() {
-        return null;
+    public List<Cuenta> getAll() throws RuntimeException{
+        return em.createQuery("SELECT c FROM Cuenta c", Cuenta.class).getResultList();
     }
 
     @Override
