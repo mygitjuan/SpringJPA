@@ -38,7 +38,7 @@ import static org.hamcrest.Matchers.*;
 class ClienteRepositoryJPATest {
 
     @Autowired
-    IClientesRepo clientesRepo;
+    private IClientesRepo clientesRepo;
 
     @Test
     void addClient_personal() throws Exception{
@@ -61,7 +61,7 @@ class ClienteRepositoryJPATest {
 
     @Test
     @Transactional
-    void getAll() throws SQLException {
+    void getAll() throws Exception {
         List<Cliente> clientes = clientesRepo.getAll();
         System.out.println(clientes);
 
