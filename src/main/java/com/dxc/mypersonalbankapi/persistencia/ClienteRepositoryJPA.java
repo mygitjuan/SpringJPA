@@ -35,7 +35,7 @@ public class ClienteRepositoryJPA implements IClientesRepo {
     }
 
     @Override
-    public List<Cliente> getAll() throws Exception {
+    public List<Cliente> getAll() throws RuntimeException {
         return em.createQuery("SELECT c FROM cliente c", Cliente.class).getResultList();
     }
 

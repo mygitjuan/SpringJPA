@@ -61,7 +61,7 @@ class ClienteRepositoryJPATest {
 
     @Test
     @Transactional
-    void getAll() throws Exception {
+    void getAll() throws SQLException {
         List<Cliente> clientes = clientesRepo.getAll();
         System.out.println(clientes);
 
