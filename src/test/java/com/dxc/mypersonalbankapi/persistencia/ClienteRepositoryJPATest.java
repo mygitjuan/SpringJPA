@@ -77,7 +77,12 @@ class ClienteRepositoryJPATest {
 
 
     @Test
-    void getClientById() {
+    @Transactional
+    void getClientById() throws Exception{
+        Cliente aCliente = clientesRepo.getClientById(14);
+        System.out.println(aCliente);
+        assertEquals(aCliente.getId(), 14);
+        assertNotNull(aCliente);
     }
 
     @Test

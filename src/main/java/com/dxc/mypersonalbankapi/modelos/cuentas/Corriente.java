@@ -1,11 +1,17 @@
 package com.dxc.mypersonalbankapi.modelos.cuentas;
 
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Corriente extends Cuenta {
     @Transient

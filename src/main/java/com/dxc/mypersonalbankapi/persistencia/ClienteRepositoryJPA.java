@@ -41,7 +41,7 @@ public class ClienteRepositoryJPA implements IClientesRepo {
 
     @Override
     public Cliente getClientById(Integer id) throws Exception {
-        return null;
+        return em.find(Cliente.class, id);
     }
 
 
