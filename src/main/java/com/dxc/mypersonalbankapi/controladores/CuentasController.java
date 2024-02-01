@@ -37,7 +37,7 @@ public class CuentasController {
 
         try {
             List<Cuenta> cuentas = cuentasRepositoryData.findAllById(Collections.singleton(uid));
-            /*List<Cuenta> cuentas = cuentasRepositoryData.getReferenceById(uid);*/
+
             if (cuentas != null && cuentas.size() > 0) System.out.println(cuentas);
             else System.out.println("El cliente no tiene cuentas!");
         } catch (Exception e) {
@@ -65,13 +65,13 @@ public class CuentasController {
 
         try {
             Cuenta cu = cuentasRepo.getAccountsByClientAndId(uid, aid);
-            boolean borrado = cuentasRepo.deleteAccount(cu);
-            if (borrado) {
-                Cliente cl = clientesRepoData.getReferenceById(uid);
-                cl.delisgarCuenta(cu);
-                System.out.println("Cuenta borrada 🙂!!");
-                mostrarLista(uid);
-            } else System.out.println("Cuenta NO borrada 😞!! Consulte con su oficina.");
+            cuentasRepositoryData.delete(cu);
+
+            Cliente cl = clientesRepoData.getReferenceById(uid);
+            cl.delisgarCuenta(cu);
+            System.out.println("Cuenta borrada 🙂!!");
+            mostrarLista(uid);
+
         } catch (CuentaException e) {
             System.out.println("Cuenta NO encontrado 😞! \nCode: " + e.getCode());
         } catch (Exception e) {
