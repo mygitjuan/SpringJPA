@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -23,16 +25,19 @@ public class PrestamosController {
     @Autowired
     private static PrestamosRepositoryData prestamosRepositoryData;
 
+    @Autowired
+    private static ClienteRepositoryData clientesRepoData;
+
+    @Transactional
     public static void mostrarLista(Integer uid) {
         System.out.println("\nLista de prestamos del cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
-            List<Prestamo> prestamos = prestamosRepo.getLoansByClient(uid);
+            List<Prestamo> prestamos = prestamosRepositoryData.findAllById(Collections.singleton(uid));
             if (prestamos != null && prestamos.size() > 0) System.out.println(prestamos);
             else System.out.println("El cliente no tiene prestamos!");
-        } catch (PrestamoException e) {
-            System.out.println("Cliente NO encontrado 😞! \nCode: " + e.getCode());
+
         } catch (Exception e) {
             System.out.println("Oops ha habido un problema, inténtelo más tarde 😞!");
         }
@@ -52,19 +57,21 @@ public class PrestamosController {
         }
     }
 
+    @Transactional
     public static void eliminar(Integer uid, Integer lid) {
         System.out.println("\nBorrando prestamo: " + lid + ", para cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
             Prestamo pr = prestamosRepo.getLoansByClientAndId(uid, lid);
-            boolean borrado = prestamosRepo.deleteLoan(pr);
-            if (borrado) {
-                Cliente cl = clientesRepo.getClientById(uid);
-                cl.delisgarPrestamo(pr);
-                System.out.println("Préstamo borrada 🙂!!");
-                mostrarLista(uid);
-            } else System.out.println("Préstamo NO borrado 😞!! Consulte con su oficina.");
+
+            prestamosRepositoryData.delete(pr);
+
+            Cliente cl = clientesRepoData.getReferenceById(uid);
+            cl.delisgarPrestamo(pr);
+            System.out.println("Préstamo borrada 🙂!!");
+            mostrarLista(uid);
+
         } catch (PrestamoException e) {
             System.out.println("Préstamo NO encontrado 😞! \nCode: " + e.getCode());
         } catch (Exception e) {

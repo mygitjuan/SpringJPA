@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -19,6 +20,9 @@ public class CuentasController {
 
     @Autowired
     private static IClientesRepo clientesRepo;
+
+    @Autowired
+    private static ClienteRepositoryData clientesRepoData;
 
     @Autowired
     private static ICuentasRepo cuentasRepo;
@@ -32,7 +36,7 @@ public class CuentasController {
         System.out.println("───────────────────────────────────");
 
         try {
-            List<Cuenta> cuentas = cuentasRepo.getAccountsByClient(uid);
+            List<Cuenta> cuentas = cuentasRepositoryData.findAllById(Collections.singleton(uid));
             /*List<Cuenta> cuentas = cuentasRepositoryData.getReferenceById(uid);*/
             if (cuentas != null && cuentas.size() > 0) System.out.println(cuentas);
             else System.out.println("El cliente no tiene cuentas!");
@@ -41,6 +45,7 @@ public class CuentasController {
         }
     }
 
+    @Transactional
     public static void mostrarDetalle(Integer uid, Integer aid) {
         System.out.println("\nDetalle de cuenta: " + aid + ", del cliente: " + uid);
         System.out.println("───────────────────────────────────");
@@ -53,6 +58,7 @@ public class CuentasController {
         }
     }
 
+    @Transactional
     public static void eliminar(Integer uid, Integer aid) {
         System.out.println("\nBorrando cuenta: " + aid + ", para cliente: " + uid);
         System.out.println("───────────────────────────────────");
@@ -61,7 +67,7 @@ public class CuentasController {
             Cuenta cu = cuentasRepo.getAccountsByClientAndId(uid, aid);
             boolean borrado = cuentasRepo.deleteAccount(cu);
             if (borrado) {
-                Cliente cl = clientesRepo.getClientById(uid);
+                Cliente cl = clientesRepoData.getReferenceById(uid);
                 cl.delisgarCuenta(cu);
                 System.out.println("Cuenta borrada 🙂!!");
                 mostrarLista(uid);
@@ -74,12 +80,14 @@ public class CuentasController {
 
     }
 
+
     public static void add(Integer uid, String[] args) {
         System.out.println("uid: " + uid);
         for (String arg : args) {
             System.out.println(arg);
         }
     }
+
 
     public static void actualizar(Integer uid, Integer aid, String[] args) {
         System.out.println("uid: " + uid);
