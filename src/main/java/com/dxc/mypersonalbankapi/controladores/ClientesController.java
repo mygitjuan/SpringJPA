@@ -9,19 +9,24 @@ import com.dxc.mypersonalbankapi.persistencia.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+import javax.transaction.Transactional;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
+@Controller
 public class ClientesController {
 
     //private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
-    @Setter @Getter
+    @Autowired
     private static IClientesRepo clientesRepo;
-    @Setter @Getter
+    @Autowired
+    private static ClienteRepositoryData clientesRepoData;
+    @Autowired
     private static ICuentasRepo cuentasRepo;
-    @Setter @Getter
+    @Autowired
     private static IPrestamosRepo prestamosRepo;
 
     public static void mostrarLista() throws Exception {
@@ -57,12 +62,14 @@ public class ClientesController {
 
     }
 
+    @Transactional
     public static void add(String[] args) {
         System.out.println("\nAñadiendo cliente");
         System.out.println("───────────────────────────────────");
         try {
             Cliente cl = ClientesUtils.extractClientFromArgsForCreate(args);
-            clientesRepo.addClient(cl);
+
+            clientesRepoData.save(cl);
             System.out.println("Cliente añadido: " + cl + " 🙂");
             mostrarLista();
         } catch (ClienteException e) {
