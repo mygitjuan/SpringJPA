@@ -8,6 +8,7 @@ import com.dxc.mypersonalbankapi.exceptions.ClienteException;
 import com.dxc.mypersonalbankapi.persistencia.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,6 +17,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
+@ToString
 @Controller
 public class ClientesController {
 
@@ -29,10 +31,11 @@ public class ClientesController {
     @Autowired
     private static IPrestamosRepo prestamosRepo;
 
+    @Transactional
     public static void mostrarLista() throws Exception {
         System.out.println("\nLista de clientes:");
         System.out.println("───────────────────────────────────");
-        List<Cliente> clientes = clientesRepo.getAll();
+        List<Cliente> clientes = clientesRepoData.findAll();
         for (Cliente cl : clientes) {
 
             try {
@@ -47,15 +50,15 @@ public class ClientesController {
         }
     }
 
+    @Transactional
     public static void mostrarDetalle(Integer uid) {
         System.out.println("\nDetalle de cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
-            Cliente cl = clientesRepo.getClientById(uid);
+            Cliente cl = clientesRepoData.getReferenceById(uid);
             System.out.println(cl);
-        } catch (ClienteException e) {
-            System.out.println("Cliente NO encontrado 😞! \nCode: " + e.getCode());
+
         } catch (Exception e) {
             System.out.println("Oops ha habido un problema, inténtelo más tarde 😞!");
         }
@@ -64,6 +67,7 @@ public class ClientesController {
 
     @Transactional
     public static void add(String[] args) {
+        System.out.println(args);
         System.out.println("\nAñadiendo cliente");
         System.out.println("───────────────────────────────────");
         try {
@@ -83,31 +87,23 @@ public class ClientesController {
 
     }
 
+    @Transactional
     public static void eliminar(Integer uid) {
         System.out.println("\nBorrando cliente: " + uid);
         System.out.println("───────────────────────────────────");
+        Cliente cl = clientesRepoData.getReferenceById(uid);
+        clientesRepoData.deleteById(uid);
 
-        try {
-            Cliente cl = clientesRepo.getClientById(uid);
-            boolean borrado = clientesRepo.deleteClient(cl);
-            if (borrado) {
-                System.out.println("Cliente borrado 🙂!!");
-                mostrarLista();
-            } else System.out.println("Cliente NO borrado 😞!! Consulte con su oficina.");
-        } catch (ClienteException e) {
-            System.out.println("Cliente NO encontrado 😞! \nCode: " + e.getCode());
-        } catch (Exception e) {
-            System.out.println("Oops ha habido un problema, inténtelo más tarde 😞!");
-        }
 
     }
 
+    @Transactional
     public static void actualizar(Integer uid, String[] args) {
         System.out.println("\nActualizando cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
-            Cliente cl = clientesRepo.getClientById(uid);
+            Cliente cl = clientesRepoData.getReferenceById(uid);
 
             System.out.println("cl.getClass():" + cl.getClass() + " " + cl);
             ClientesUtils.updateClientFromArgs(cl, args);
@@ -128,12 +124,13 @@ public class ClientesController {
 
     }
 
+    @Transactional
     public static void evaluarPrestamo(Integer uid, Double cantidad) {
         System.out.println("\nEvaluando préstamos de " + cantidad + " EUR para el  cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
-            Cliente cliente = clientesRepo.getClientById(uid);
+            Cliente cliente = clientesRepoData.getReferenceById(uid);
             System.out.println("Saldo total del cliente: " + cliente.obtenerSaldoTotal());
             int numPrestamos = cliente.getPrestamos() != null ? cliente.getPrestamos().size() : 0;
             System.out.println("Número total de préstamos del cliente: " + numPrestamos);
@@ -144,8 +141,6 @@ public class ClientesController {
             if (aceptable) System.out.println("SÍ se puede conceder 🙂!!");
             else System.out.println("NO puede conceder 😞!! Saldo insuficiente.");
 
-        } catch (ClienteException e) {
-            System.out.println("Cliente NO encontrado 😞! \nCode: " + e.getCode());
         } catch (Exception e) {
             System.out.println("Oops ha habido un problema, inténtelo más tarde 😞!");
             e.printStackTrace();

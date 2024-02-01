@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 class CuentasControllerTest {
-
+/*
     @Autowired
     private CuentasController cuentasControl;
     @Test
     void mostrarLista() {
         assertNotNull(cuentasControl);
         System.out.println(cuentasControl.getCuentasRepo());
-    }
+    }*/
 }

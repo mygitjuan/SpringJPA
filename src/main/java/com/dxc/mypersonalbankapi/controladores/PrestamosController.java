@@ -3,22 +3,25 @@ package com.dxc.mypersonalbankapi.controladores;
 import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
 import com.dxc.mypersonalbankapi.modelos.prestamos.Prestamo;
 import com.dxc.mypersonalbankapi.exceptions.PrestamoException;
-import com.dxc.mypersonalbankapi.persistencia.ClientesInMemoryRepo;
-import com.dxc.mypersonalbankapi.persistencia.IClientesRepo;
-import com.dxc.mypersonalbankapi.persistencia.IPrestamosRepo;
-import com.dxc.mypersonalbankapi.persistencia.PrestamosInMemoryRepo;
+import com.dxc.mypersonalbankapi.persistencia.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 public class PrestamosController {
     //private static IPrestamosRepo prestamosRepo = PrestamosInMemoryRepo.getInstance();
     //private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
-    @Setter @Getter
+    @Autowired
     private static IClientesRepo clientesRepo;
-    @Setter @Getter
+    @Autowired
     private static IPrestamosRepo prestamosRepo;
+
+    @Autowired
+    private static PrestamosRepositoryData prestamosRepositoryData;
 
     public static void mostrarLista(Integer uid) {
         System.out.println("\nLista de prestamos del cliente: " + uid);

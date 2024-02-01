@@ -3,32 +3,37 @@ package com.dxc.mypersonalbankapi.controladores;
 import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
 import com.dxc.mypersonalbankapi.modelos.cuentas.Cuenta;
 import com.dxc.mypersonalbankapi.exceptions.CuentaException;
-import com.dxc.mypersonalbankapi.persistencia.ClientesInMemoryRepo;
-import com.dxc.mypersonalbankapi.persistencia.CuentasInMemoryRepo;
-import com.dxc.mypersonalbankapi.persistencia.IClientesRepo;
-import com.dxc.mypersonalbankapi.persistencia.ICuentasRepo;
+import com.dxc.mypersonalbankapi.persistencia.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Controller
 public class CuentasController {
     //private static ICuentasRepo cuentasRepo = CuentasInMemoryRepo.getInstance();
     //private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
 
-    @Setter
-    @Getter
+    @Autowired
     private static IClientesRepo clientesRepo;
 
-    @Setter @Getter
+    @Autowired
     private static ICuentasRepo cuentasRepo;
 
+    @Autowired
+    private static CuentasRepositoryData cuentasRepositoryData;
+
+    @Transactional
     public static void mostrarLista(Integer uid) {
         System.out.println("\nLista de cuentas del cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
             List<Cuenta> cuentas = cuentasRepo.getAccountsByClient(uid);
+            /*List<Cuenta> cuentas = cuentasRepositoryData.getReferenceById(uid);*/
             if (cuentas != null && cuentas.size() > 0) System.out.println(cuentas);
             else System.out.println("El cliente no tiene cuentas!");
         } catch (Exception e) {

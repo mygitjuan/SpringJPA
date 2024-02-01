@@ -40,14 +40,14 @@ class ClienteRepositoryDataTest {
         assertThat(newCliente, notNullValue());
         assertThat(newCliente.getId(), greaterThan(0));
     }
-/*
+
     @Test
     void addClient_empresa() throws Exception{
 
         String[] myCadena = {"Dev","Markey"};
 
-        Cliente newCliente = new Empresa(null, "Servicios Mario Bros SL", "si@s.com", "Calle SI 3", LocalDate.now(), true, false, "J12345678", myCadena);
-        clientesRepo.addClient(newCliente);
+        Cliente newCliente = new Empresa(null, "Servicios Mario Bros SL Data", "siData@s.com", "Calle SI 3", LocalDate.now(), true, false, "J12345678", myCadena);
+        clientesRepo.save(newCliente);
         assertThat(newCliente, notNullValue());
         assertThat(newCliente.getId(), greaterThan(0));
     }
@@ -55,32 +55,32 @@ class ClienteRepositoryDataTest {
     @Test
     @Transactional
     void getAll() throws Exception {
-        List<Cliente> clientes = clientesRepo.getAll();
+        List<Cliente> clientes = clientesRepo.findAll();
         System.out.println(clientes);
 
         assertNotNull(clientes);
         assertTrue(clientes.size() > 0);
     }
 
-    @Test
+ /*   @Test
     void deleteClient() {
 
     }
-
+*/
 
 
     @Test
     @Transactional
     void getClientById() throws Exception{
-        Cliente aCliente = clientesRepo.getClientById(14);
+        Cliente aCliente = clientesRepo.getReferenceById(14);
         System.out.println(aCliente);
         assertEquals(aCliente.getId(), 14);
         assertNotNull(aCliente);
     }
-
+/*
     @Test
     void updateClient() {
-    }
+    }*/
 
- */
+
 }

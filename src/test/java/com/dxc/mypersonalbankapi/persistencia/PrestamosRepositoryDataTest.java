@@ -1,60 +1,41 @@
 package com.dxc.mypersonalbankapi.persistencia;
 
-import org.junit.jupiter.api.Test;
-
-import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import com.dxc.mypersonalbankapi.modelos.prestamos.Prestamo;
-import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
-import com.dxc.mypersonalbankapi.modelos.clientes.Empresa;
-import com.dxc.mypersonalbankapi.modelos.clientes.Personal;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.jupiter.api.Assertions.*;
 import com.dxc.mypersonalbankapi.config.SpringConfig;
-
-
+import com.dxc.mypersonalbankapi.modelos.prestamos.Prestamo;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringConfig.class})
 @TestMethodOrder( MethodOrderer.OrderAnnotation.class)
 @EnableAutoConfiguration
-class PrestamosRepositoryJPATest {
+class PrestamosRepositoryDataTest {
     @Autowired
-    private IPrestamosRepo prestamosRepo;
+    private PrestamosRepositoryData prestamosRepo;
 
     @Test
     @Transactional
     void getAll() {
-        List<Prestamo> prestamos = prestamosRepo.getAll();
+        List<Prestamo> prestamos = prestamosRepo.findAll();
         System.out.println(prestamos);
 
         assertNotNull(prestamos);
         assertTrue(prestamos.size() > 0);
     }
-
+/*
     @Test
     void getLoanById() {
     }
@@ -81,5 +62,5 @@ class PrestamosRepositoryJPATest {
 
     @Test
     void getdb_url() {
-    }
+    }*/
 }
