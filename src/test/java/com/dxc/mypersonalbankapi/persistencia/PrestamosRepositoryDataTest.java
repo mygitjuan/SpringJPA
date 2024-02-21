@@ -1,6 +1,7 @@
 package com.dxc.mypersonalbankapi.persistencia;
 
 import com.dxc.mypersonalbankapi.config.SpringConfig;
+import com.dxc.mypersonalbankapi.modelos.clientes.Cliente;
 import com.dxc.mypersonalbankapi.modelos.prestamos.Prestamo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -26,6 +26,9 @@ class PrestamosRepositoryDataTest {
     @Autowired
     private PrestamosRepositoryData prestamosRepo;
 
+    @Autowired
+    private ClienteRepositoryData clientesRepo;
+
     @Test
     @Transactional
     void getAll() {
@@ -35,6 +38,24 @@ class PrestamosRepositoryDataTest {
         assertNotNull(prestamos);
         assertTrue(prestamos.size() > 0);
     }
+
+    @Test
+    @Transactional
+    void getLoansByClient() {
+        Cliente cliente = clientesRepo.getReferenceById(1);
+        System.out.println(cliente);
+        assertEquals(cliente.getId(), 1);
+        assertNotNull(cliente);
+
+        List<Prestamo> prestamos = cliente.getPrestamos();
+
+        System.out.println(prestamos);
+        assertNotNull(prestamos);
+        assertTrue(prestamos.size() > 0);
+
+
+    }
+
 /*
     @Test
     void getLoanById() {
